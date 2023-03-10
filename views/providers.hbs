@@ -16,6 +16,7 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>Delete</th>
         </tr>
     </thead>
 
@@ -28,8 +29,20 @@
             <td>{{this.provider_id}}</td>
             <td>{{this.first_name}}</td>
             <td>{{this.last_name}}</td>
-
+            <td>
+                <form id="delete-provider-form-ajax"action="/delete-provider"method="POST">
+                    <button type="submit" name="delete_providerid" value="{{this.provider_id}}">Delete</button>
+                </form>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+<p>To add a new Provider, please enter the information below and click 'Submit'!</p>
+<form id="add-provider-form-ajax"action="/add-provider"method="POST">
+    <label for="test-name">Name: </label>
+    <input type="text" name="first-name" id="input-firstname">
+    <input type="text" name="last-name" id="input-lastname">
+    <input type="submit">
+</form>

@@ -132,7 +132,21 @@ const add_test = require('./js/add_test.js')
 app.use('/', add_test)
 const delete_test= require('./js/delete_test.js')
 app.use('/', delete_test)
-
+//PROVIDER PAGE
+const add_provider = require('./js/add_provider.js')
+app.use('/', add_provider)
+const delete_provider= require('./js/delete_provider.js')
+app.use('/', delete_provider)
+//PROCEDURE PAGE
+const add_procedure = require('./js/add_procedure.js')
+app.use('/', add_procedure)
+const delete_procedure= require('./js/delete_procedure.js')
+app.use('/', delete_procedure)
+//ILLNESS PAGE
+const add_illness = require('./js/add_illness.js')
+app.use('/', add_illness)
+const delete_illness= require('./js/delete_illness.js')
+app.use('/', delete_illness)
 /*
     LISTENER
 */
