@@ -1,28 +1,19 @@
-function deleteAllergy(allergy_id) {
-  //console.log('delete allergy-clicked!')
-    let link = '/delete-allergy';
-    let data = {
-      id: allergy_id
-    };
-  
-    $.ajax({
-      url: link,
-      type: 'DELETE',
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      success: function(result) {
-        deleteRow(allergy_id);
-      }
-    });
-  }
-  
-  function deleteRow(allergy_id){
-      let table = document.getElementById("allergies-table");
-      for (let i = 0, row; row = table.rows[i]; i++) {
-         if (table.rows[i].getAttribute("data-value") == allergy_id) {
-              table.deleteRow(i);
-              break;
-         }
-      }
-  }
+const express = require('express');
+const router = express.Router();
+var db = require('../database/db-connector')
 
+router.post('/delete-allergy', function(req,res,next){
+  let allergy_id = req.body.delete_allergyid;
+  let delete_allergy_id= `DELETE FROM Allergies WHERE allergies_id = ('${allergy_id}')`;
+        db.pool.query(delete_allergy_id, [allergy_id], function(error, rows, fields){
+            if (error) {
+              console.log(error);
+              res.sendStatus(400);
+            }
+            else{              
+              res.redirect('/Allergies');
+            }
+  })
+});
+
+module.exports = router;

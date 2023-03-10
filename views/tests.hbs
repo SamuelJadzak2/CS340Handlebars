@@ -16,6 +16,7 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>Delete</th>
         </tr>
     </thead>
 
@@ -27,8 +28,19 @@
         <tr>
             <td>{{this.test_id}}</td>
             <td>{{this.name}}</td>
-
+            <td>
+                <form id="delete-test-form-ajax"action="/delete-test"method="POST">
+                    <button type="submit" name="delete_testid" value="{{this.test_id}}">Delete</button>
+                </form>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+<p>To add a new Test, please enter the information below and click 'Submit'!</p>
+<form id="add-test-form-ajax"action="/add-test"method="POST">
+    <label for="test-name">Name: </label>
+    <input type="text" name="input-testname" id="input-testname">
+    <input type="submit">
+</form>

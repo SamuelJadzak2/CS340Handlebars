@@ -1,14 +1,11 @@
-<!-- index.hbs -->
 <h1>Allergies Page</h1>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 
 {{!-- Create a table --}}
 <table id="allergies-table">
-
     {{!-- Header section --}}
     <thead>
-
         {{!-- For just the first row, we print each key of the row object as a header cell so we
         know what each column means when the page renders --}}
         <tr>
@@ -20,33 +17,6 @@
             <th>Delete</th>
         </tr>
     </thead>
-    <script>function deleteAllergy(allergy_id) {
-  console.log('delete allergy-clicked!')
-    let link = '/delete-allergy';
-    let data = {
-      id: allergy_id
-    };
-  
-    $.ajax({
-      url: link,
-      type: 'DELETE',
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      success: function(result) {
-        deleteRow(allergy_id);
-      }
-    });
-  }
-  
-  function deleteRow(allergy_id){
-      let table = document.getElementById("allergies-table");
-      for (let i = 0, row; row = table.rows[i]; i++) {
-         if (table.rows[i].getAttribute("data-value") == allergy_id) {
-              table.deleteRow(i);
-              break;
-         }
-      }
-  }</script>
 
     {{!-- Body section --}}
     <tbody>
@@ -56,12 +26,17 @@
         <tr data-value={{this.allergies_id}}>
             <td>{{this.allergies_id}}</td>
             <td>{{this.allergy_name}}</td>
-            <td><button onclick="deleteAllergy({{this.allergies_id}})">Delete</button></td>
+            
+            <td>
+                <form id="delete-allergy-form-ajax"action="/delete-allergy"method="POST">
+                    <button type="submit" name="delete_allergyid" value="{{this.allergies_id}}">Delete</button>
+                </form>
+            </td>
             </tr>
         {{/each}}
     </tbody>
+
 </table>
-{{!-- <script src="./js/delete_allergy.js"></script> --}}
 
 {{!-- Form to add a record to the table  --}}
 <h2>Adding Data with AJAX</h2>
@@ -69,9 +44,5 @@
 <form id="add-allergy-form-ajax"action="/add-allergy"method="POST">
     <label for="allergy-name">Name: </label>
     <input type="text" name="input-allergyname" id="input-allergyname">
-
     <input type="submit">
 </form>
-
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_allergy.js"></script>
