@@ -1,5 +1,13 @@
+
 <h1>Allergies Page</h1>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+
+<form id="search-allergy-html" method='GET' action='/Allergies'>
+    <label for="input-allergy">Search by Allergy Name: </label>
+    <input type="text" name="allergyname" id="input-allergyname-html-search">
+    <input type="submit">
+    <a href='/Allergies'><button>Reset</button></a>
+</form>
 
 
 {{!-- Create a table --}}
@@ -23,16 +31,30 @@
 
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr data-value={{this.allergies_id}}>
+        <tr class="allergy-row" data-value={{this.allergies_id}}>
             <td>{{this.allergies_id}}</td>
             <td>{{this.allergy_name}}</td>
             
             <td>
-                <form id="delete-allergy-form-ajax"action="/delete-allergy"method="POST">
+                <form class="delete-allergy-form-ajax" action="/delete-allergy" method="POST">
                     <button type="submit" name="delete_allergyid" value="{{this.allergies_id}}">Delete</button>
                 </form>
             </td>
-            </tr>
+
+            <td>
+                <button type="button" class="update-allergy-btn" value="{{this.allergies_id}}">Update</button>
+            </td>
+
+            <td>      
+                <div class="hide-stuff" style="display: none;">      
+                    <form class="update-allergy-form" action="/update-allergy" method="POST" >
+                        <input type="text" class="updated-allergyname" name="update_allergyname">
+                        <button type="submit" class="update-submit-btn" name="update_allergyid" value="{{this.allergies_id}}" >Submit</button>
+                    </form>
+                </div>
+            </td>
+
+        </tr>
         {{/each}}
     </tbody>
 
@@ -40,8 +62,42 @@
 
 {{!-- Form to add a record to the table  --}}
 <p>To add a new Allergy, please enter the information below and click 'Submit'!</p>
-<form id="add-allergy-form-ajax"action="/add-allergy"method="POST">
+<form id="add-allergy-form-ajax" action="/add-allergy" method="POST">
     <label for="allergy-name">Name: </label>
     <input type="text" name="input-allergyname" id="input-allergyname">
     <input type="submit">
 </form>
+
+
+
+
+<script>
+    // Get the button element and add a click event listener
+    const buttons = document.querySelectorAll('.update-allergy-btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the element to remove the hidden attribute from
+            const row = button.closest('.allergy-row');
+            const element = row.querySelector('.hide-stuff');
+            // Remove the hidden attribute
+            element.style.display = 'block';
+        });
+    });
+</script>
+<script>
+    const searchForm = document.getElementById('search-allergies-form');
+
+searchForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const searchInput = document.getElementById('search-allergies-input');
+  const searchQuery = searchInput.value;
+
+  fetch(`/search-allergies?query=${searchQuery}`)
+    .then(response => response.json())
+    .then(data => {
+      // update the allergies table with the filtered data
+    })
+    .catch(error => console.error(error));
+});
+</script>

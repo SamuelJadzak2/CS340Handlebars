@@ -28,8 +28,29 @@
             <td>{{this.patient_allergies_id}}</td>
             <td>{{this.Patients_patient_id}}</td>
             <td>{{this.Allergies_allergies_id}}</td>
-
+            <td>{{this.allergy_name}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+<form action="/add-patient-allergy" method="post">
+  <label for="patient_id">Patient:</label>
+  <select name="patient_id">
+    {{#each patients}}
+      <option name="pat_id" value="{{this.patient_id}}">{{this.first_name}} {{this.last_name}}</option>
+    {{/each}}
+  </select>
+
+  <label for="allergy_id">Allergy:</label>
+  <select name="allergy_id">
+    {{#each allergies}}
+      <option name="aller_id" value="{{this.allergies_id}}">{{this.allergy_name}}</option>
+    {{/each}}
+  </select>
+
+  <button type="submit" >Add</button>
+</form>
+

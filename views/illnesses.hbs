@@ -1,13 +1,12 @@
-<!-- index.hbs -->
-<h1>Illnesses Page</h1>
 
+
+<h1>Illnesses Page</h1>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 
 {{!-- Create a table --}}
-<table>
-
+<table id="illnesses-table">
     {{!-- Header section --}}
     <thead>
-
         {{!-- For just the first row, we print each key of the row object as a header cell so we
         know what each column means when the page renders --}}
         <tr>
@@ -16,30 +15,61 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>Delete</th>
         </tr>
     </thead>
 
     {{!-- Body section --}}
     <tbody>
-
-        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{!-- For each row, print the id, name, and add delete and update buttons --}}
         {{#each data}}
-        <tr>
+        <tr class="illness-row" data-value={{this.illness_id}}>
             <td>{{this.illness_id}}</td>
             <td>{{this.illness_name}}</td>
+
             <td>
-                <form id="delete-illness-form-ajax"action="/delete-illness"method="POST">
+                <form class="delete-illness-form-ajax" action="/delete-illness" method="POST">
                     <button type="submit" name="delete_illnessid" value="{{this.illness_id}}">Delete</button>
                 </form>
             </td>
+
+            <td>
+                <button type="button" class="update-illness-btn" value="{{this.illness_id}}">Update</button>
+            </td>
+
+            <td>      
+                <div class="hide-stuff" style="display: none;">      
+                    <form class="update-illness-form" action="/update-illness" method="POST" >
+                        <input type="text" class="updated-illnessname" name="update_illnessname">
+                        <button type="submit" class="update-submit-btn" name="update_illnessid" value="{{this.illness_id}}" >Submit</button>
+                    </form>
+                </div>
+            </td>
+
         </tr>
         {{/each}}
     </tbody>
+
 </table>
+
+{{!-- Form to add a record to the table  --}}
 <p>To add a new Illness, please enter the information below and click 'Submit'!</p>
-<form id="add-illness-form-ajax"action="/add-illness"method="POST">
+<form id="add-illness-form-ajax" action="/add-illness" method="POST">
     <label for="illness-name">Name: </label>
     <input type="text" name="input-illnessname" id="input-illnessname">
     <input type="submit">
 </form>
 
+<script>
+    // Get the button element and add a click event listener
+    const buttons = document.querySelectorAll('.update-illness-btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the element to remove the hidden attribute from
+            const row = button.closest('.illness-row');
+            const element = row.querySelector('.hide-stuff');
+            // Remove the hidden attribute
+            element.style.display = 'block';
+        });
+    });
+</script>

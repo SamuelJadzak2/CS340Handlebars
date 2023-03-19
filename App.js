@@ -45,11 +45,17 @@ app.get('/Patients', function(req, res){
     })
 });
 
-app.get('/Allergies', function(req, res){
-    let query1 = "SELECT * FROM Allergies";
-
-    db.pool.query(query1, function(error, rows, fields){
-        res.render('allergies', {data:rows});
+app.get('/Allergies', function(req, res) {
+    console.log('get /Allergies');
+    let query1;
+    if (req.query.allergyname === undefined) {
+      query1 = "SELECT * FROM Allergies";
+    } 
+    else {
+      query1 = `SELECT * FROM Allergies WHERE allergy_name LIKE '%${req.query.allergyname}%'`;
+    }
+    db.pool.query(query1, function(error, rows, fields){  
+        return res.render('allergies', {data: rows});
     })
 });
 
@@ -69,14 +75,53 @@ app.get('/Patient_Procedures', function(req, res){
     })
 });
 
-app.get('/Patient_Allergies', function(req, res){
-    let query1 = "SELECT * FROM Patient_Allergies";
+// app.get('/Patient_Allergies', function(req, res){
+//     // let query1 = "SELECT * FROM Patient_Allergies";
+//     let query1 = "SELECT pa.patient_allergies_id, pa.Patients_patient_id, pa.Allergies_allergies_id, a.allergy_name, p.first_name, p.last_name FROM Patient_Allergies pa JOIN Allergies a ON pa.Allergies_allergies_id=a.allergies_id JOIN Patients p ON pa.Patients_patient_id = p.patient_id";
 
+//     db.pool.query(query1, function(error, rows, fields){
+//         res.render('patient_allergies', {data:rows});
+//     })
+// });
+// Display the patient allergies page
+// Display the patient allergies page
+// Display the patient allergies page
+app.get('/patient_allergies', function(req, res){
+    // Query the database to get the list of patient allergies
+    // let query1 = "SELECT pa.patient_allergies_id, pa.Patients_patient_id, pa.Allergies_allergies_id, a.allergy_name, CONCAT(p.first_name, ' ', p.last_name) AS patient_name FROM Patient_Allergies pa JOIN Allergies a ON pa.Allergies_allergies_id=a.allergies_id JOIN Patients p ON pa.Patients_patient_id = p.patient_id";
+    let query1 = "SELECT pa.patient_allergies_id, pa.Patients_patient_id, pa.Allergies_allergies_id, a.allergy_name, p.first_name, p.last_name FROM Patient_Allergies pa JOIN Allergies a ON pa.Allergies_allergies_id=a.allergies_id JOIN Patients p ON pa.Patients_patient_id = p.patient_id";
     db.pool.query(query1, function(error, rows, fields){
-        res.render('patient_allergies', {data:rows});
-    })
-});
-
+      if (error) {
+        console.log(error);
+      }
+      else {
+        // Query the database to get the list of patients
+        let query2 = "SELECT * FROM Patients";
+        db.pool.query(query2, function(error, patients, fields) {
+          if (error) {
+            console.log(error);
+          }
+          else {
+            // Query the database to get the list of allergies
+            let query3 = "SELECT * FROM Allergies";
+            db.pool.query(query3, function(error, allergies, fields) {
+              if (error) {
+                console.log(error);
+              }
+              else {
+                // Render the patient allergies page with the data
+                res.render('patient_allergies', {
+                  data:rows,
+                  patients:patients,
+                  allergies:allergies
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  });
 app.get('/Patient_Illnesses', function(req, res){
     let query1 = "SELECT * FROM Patient_illnesses";
 
@@ -123,10 +168,8 @@ app.get('/Tests', function(req, res){
 
 //ADD ALL JS FILES HERE
 //ALLERGY PAGE
-const add_allergy = require('./js/add_allergy.js')
-app.use('/', add_allergy)
-const delete_allergy = require('./js/delete_allergy.js')
-app.use('/', delete_allergy)
+const allergy_CRUD = require('./js/allergy_CRUD.js')
+app.use('/', allergy_CRUD)
 //TEST PAGE
 const add_test = require('./js/add_test.js')
 app.use('/', add_test)
@@ -138,15 +181,13 @@ app.use('/', add_provider)
 const delete_provider= require('./js/delete_provider.js')
 app.use('/', delete_provider)
 //PROCEDURE PAGE
-const add_procedure = require('./js/add_procedure.js')
-app.use('/', add_procedure)
-const delete_procedure= require('./js/delete_procedure.js')
-app.use('/', delete_procedure)
+const procedure_CRUD= require('./js/procedure_CRUD.js')
+app.use('/', procedure_CRUD)
 //ILLNESS PAGE
-const add_illness = require('./js/add_illness.js')
-app.use('/', add_illness)
-const delete_illness= require('./js/delete_illness.js')
-app.use('/', delete_illness)
+const illness_CRUD = require('./js/Illness_CRUD.js')
+app.use('/', illness_CRUD)
+const patient_allergies_CRUD = require('./js/patient_allergies_CRUD.js')
+app.use('/', patient_allergies_CRUD)
 /*
     LISTENER
 */
