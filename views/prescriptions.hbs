@@ -40,8 +40,14 @@
 </table>
 <p>To add a new prescription, please enter the information below and click 'Submit'!</p>
 <form id="add-prescription-form-ajax"action="/add-prescription"method="POST">
-    <label for="test-name">Name: </label>
+    <label for="test-name">Prescription: </label>
     <input type="text" name="description" id="description">
-    <input type="text" name="assoc-patient" id="assoc-patient">
+    <label for="patient_id">Patient:</label>
+    <select name="patient_id">
+    {{#each patients}}
+      <option name="pat_id" value="{{this.patient_id}}">{{this.first_name}} {{this.last_name}}</option>
+    {{/each}}
+    
     <input type="submit">
 </form>
+

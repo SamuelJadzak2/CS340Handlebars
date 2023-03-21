@@ -1,6 +1,6 @@
+
 <!-- index.hbs -->
 <h1>Appointments Page</h1>
-
 
 {{!-- Create a table --}}
 <table>
@@ -22,14 +22,48 @@
     {{!-- Body section --}}
     <tbody>
 
-        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{!-- For each row, print the id, date and time, patient ID, provider ID, patient first and last name --}}
         {{#each data}}
         <tr>
             <td>{{this.appointment_id}}</td>
             <td>{{this.appointment_date_time}}</td>
             <td>{{this.Patients_patient_id}}</td>
             <td>{{this.Providers_provider_id}}</td>
+            <td>{{this.patient_first_name}}</td>
+            <td>{{this.patient_last_name}}</td>
+            <td>{{this.provider_first_name}}</td>
+            <td>{{this.provider_last_name}}</td>
+            <td>
+                <form class="delete-appointment-form-ajax" action="/delete-appointment" method="POST">
+                    <button type="submit" name="delete_appointment_id" value="{{this.appointment_id}}">Delete</button>
+                </form>
+            </td>
+
+            <td>
+                <button type="button" class="update-appointment-btn" value="{{this.appointment_id}}">Update</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+<form action="/add-appointment" method="post">
+  <label for="patient_id">Patient:</label>
+  <select name="patient_id">
+    {{#each patients}}
+      <option name="pat_id" value="{{this.patient_id}}">{{this.first_name}} {{this.last_name}}</option>
+    {{/each}}
+  </select>
+
+  <label for="provider_id">Provider:</label>
+  <select name="provider_id">
+    {{#each providers}}
+      <option name="prov_id" value="{{this.provider_id}}">{{this.first_name}} {{this.last_name}}</option>
+    {{/each}}
+  </select>
+
+  <label for="datetime_id">Date and Time:</label>
+  <input type="datetime-local" id="datetime_id" name="appointment_date_time">
+
+  <button type="submit" >Schedule Appointment</button>
+</form>

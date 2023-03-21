@@ -31,6 +31,15 @@
             <td>{{this.allergy_name}}</td>
             <td>{{this.first_name}}</td>
             <td>{{this.last_name}}</td>
+            <td>
+                <form class="delete-allergy-form-ajax" action="/delete-patient-allergy" method="POST">
+                    <button type="submit" name="delete_patient_allergies_id" value="{{this.patient_allergies_id}}">Delete</button>
+                </form>
+            </td>
+
+            <td>
+                <button type="button" class="update-patient-allergy-btn" value="{{this.allergies_id}}">Update</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>

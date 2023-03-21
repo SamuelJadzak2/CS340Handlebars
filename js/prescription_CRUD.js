@@ -2,14 +2,17 @@ const express = require('express');
 const router = express.Router();
 var db = require('../database/db-connector')
 
-router.post('/add-patient-allergy', function(req, res) {
+router.post('/add-prescription', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
+    let description = data['description'];
     let patient_id = data['patient_id'];
-    let allergy_id = data['allergy_id'];
+  
+    console.log(description, patient_id);
   
     // Create the query and run it on the database
-    query = `INSERT INTO Patient_Allergies (Patients_patient_id, Allergies_allergies_id) VALUES (${patient_id}, ${allergy_id})`;
+    let query = `INSERT INTO Prescriptions (desciption, Patients_patient_id) 
+                VALUES ('${description}', '${patient_id}')`;
     db.pool.query(query, function(error, rows, fields) {
       // Check to see if there was an error
       if (error) {
@@ -17,20 +20,21 @@ router.post('/add-patient-allergy', function(req, res) {
         console.log(error)
         res.sendStatus(400);
       } else {
-        res.redirect('/patient_allergies');
+        res.redirect('/Prescriptions');
       }
     });
   });
-  router.post('/delete-patient-allergy', function(req,res,next){
-    let patient_allergies_id = req.body.delete_patient_allergies_id
-    let delete_patient_allergies_id= `DELETE FROM Patient_Allergies WHERE patient_allergies_id = ('${patient_allergies_id}')`;
-          db.pool.query(delete_patient_allergies_id, [patient_allergies_id], function(error, rows, fields){
+
+  router.post('/delete-prescription', function(req,res,next){
+    let prescription_id = req.body.delete_prescriptionid;
+    let delete_prescription_id= `DELETE FROM Prescriptions WHERE prescription_id = ('${prescription_id}')`;
+          db.pool.query(delete_prescription_id, [prescription_id], function(error, rows, fields){
               if (error) {
                 console.log(error);
                 res.sendStatus(400);
               }
               else{              
-                res.redirect('/patient_allergies');
+                res.redirect('/Prescriptions');
               }
     })
   });
