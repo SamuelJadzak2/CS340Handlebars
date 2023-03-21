@@ -113,13 +113,31 @@ app.get('/patient_allergies', function(req, res){
     });
   });
 
-app.get('/Patient_Illnesses', function(req, res){
-    let query1 = "SELECT * FROM Patient_illnesses";
 
+app.get('/Patient_Illnesses', function(req, res){
+    let query1 = "SELECT pi.patient_illnesses_id, pi.date_diagnosed, pi.current_status, pi.Patients_patient_id, pi.Illnesses_illness_id, i.illness_name, p.first_name, p.last_name FROM Patient_illnesses pi JOIN Illnesses i ON pi.Illnesses_illness_id=i.illness_id JOIN Patients p ON pi.Patients_patient_id = p.patient_id";
+    
     db.pool.query(query1, function(error, rows, fields){
-        res.render('patient_illnesses', {data:rows});
-    })
-});
+      // Query the database to get the list of patients
+      let query2 = "SELECT * FROM Patients";
+      
+      db.pool.query(query2, function(error, patients, fields) {
+        // Query the database to get the list of allergies
+        let query3 = "SELECT * FROM Illnesses";
+        
+        db.pool.query(query3, function(error, illnesses, fields) {
+          // Render the patient allergies page with the data
+          res.render('patient_illnesses', {
+            data:rows,
+            patients:patients,
+            illnesses:illnesses
+          });
+        });
+      });
+    });
+  });
+
+
 
 app.get('/Patient_Tests', function(req, res){
     let query1 = "SELECT * FROM Patient_Tests";
