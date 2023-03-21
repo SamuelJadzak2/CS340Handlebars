@@ -35,3 +35,30 @@
         {{/each}}
     </tbody>
 </table>
+<form action="/add-patient-test" method="post">
+  <label for="test_result">Test Result:</label>
+  <select name="test_result">
+    {{#each data}}
+      <option name="test_res" value="{{this.test_result}}">{{this.test_result}}</option>
+    {{/each}}
+  </select>
+
+  <label for="Patients_patient_id">Patients Patient ID:</label>
+  <select name="Patients_patient_id">
+    {{#each data}}
+      <option name="prov_id" value="{{this.Tests_test_id}}">{{this.Tests_test_id}}</option>
+    {{/each}}
+  </select>
+
+  <label for="Tests_test_id">Tests Test ID:</label>
+  <select name="Tests_test_id">
+    {{#each data}}
+      <option name="prov_id" value="{{this.Patients_patient_id}}">{{this.Patients_patient_id}}</option>
+    {{/each}}
+  </select>
+
+  <label for="datetime_id">Date and Time:</label>
+  <input type="datetime-local" id="datetime_id" name="appointment_date_time">
+
+  <button type="submit" >Add Patient Tests</button>
+</form>

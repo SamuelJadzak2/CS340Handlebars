@@ -27,10 +27,31 @@
         <tr>
             <td>{{this.patient_procedures_id}}</td>
             <td>{{this.date_performed}}</td>
-            <td>{{this.patients_patient_id}}</td>
-            <td>{{this.procedures_procedure_id}}</td>
+            <td>{{this.Patients_patient_id}}</td>
+            <td>{{this.Procedures_procedure_id}}</td>
 
         </tr>
         {{/each}}
     </tbody>
 </table>
+<form action="/add-patient-procedures" method="post">
+
+  <label for="Patients_patient_id">Patients Patient ID:</label>
+  <select name="Patients_patient_id">
+    {{#each data}}
+      <option name="pat_id" value="{{this.Patients_patient_id}}">{{this.Patients_patient_id}}</option>
+    {{/each}}
+  </select>
+
+  <label for="procedures_id">Procedures procedure:</label>
+  <select name="procedures_id">
+    {{#each data}}
+      <option name="prov_id" value="{{this.Procedures_procedure_id}}">{{this.Procedures_procedure_id}}</option>
+    {{/each}}
+  </select>
+
+  <label for="datetime_id">Date and Time:</label>
+  <input type="datetime-local" id="datetime_id" name="appointment_date_time">
+
+  <button type="submit" >Add Patient Tests</button>
+</form>
