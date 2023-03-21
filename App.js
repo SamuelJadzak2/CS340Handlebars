@@ -29,7 +29,8 @@ app.get('/', function(req, res)
 
 app.get('/Appointments', function(req, res){
     // let query1 = "SELECT a.appointment_id, a.appointment_date_time, a.Patients_patient_id, a.Providers_provider_id, p.first_name, p.last_name FROM Appointments a JOIN Patients p ON a.Patients_patient_id = p.patient_id JOIN Providers pr ON a.Providers_provider_id = pr.provider_id";
-    let query1 = "SELECT a.appointment_id, a.appointment_date_time, a.Patients_patient_id, a.Providers_provider_id, p.first_name AS patient_first_name, p.last_name AS patient_last_name, pr.first_name AS provider_first_name, pr.last_name AS provider_last_name FROM Appointments a JOIN Patients p ON a.Patients_patient_id = p.patient_id JOIN Providers pr ON a.Providers_provider_id = pr.provider_id";
+    let query1 = "SELECT a.appointment_id, a.appointment_date_time, a.Patients_patient_id, a.Providers_provider_id, p.first_name AS patient_first_name, p.last_name AS patient_last_name, pr.first_name AS provider_first_name, pr.last_name AS provider_last_name FROM Appointments a JOIN Patients p ON a.Patients_patient_id = p.patient_id LEFT JOIN Providers pr ON a.Providers_provider_id = pr.provider_id";
+    // let query1 = "Select * FROM Appointments"
     db.pool.query(query1, function(error, rows, fields){
       // Query the database to get the list of patients
       let query2 = "SELECT * FROM Patients";
