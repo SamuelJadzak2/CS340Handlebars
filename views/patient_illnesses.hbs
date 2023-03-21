@@ -35,3 +35,30 @@
         {{/each}}
     </tbody>
 </table>
+<form action="/add-patient-illness" method="post">
+  <label for="current-status">Current Status:</label>
+  <select name="current_status">
+    {{#each data}}
+      <option name="current-status" value="{{this.current_status}}">{{this.current_status}}</option>
+    {{/each}}
+  </select>
+
+  <label for="Patients_patient_id">Patients Patient ID:</label>
+  <select name="Patients_patient_id">
+    {{#each data}}
+      <option name="pat_id" value="{{this.Patients_patient_id}}">{{this.Patients_patient_id}}</option>
+    {{/each}}
+  </select>
+
+  <label for="illness_id">Illness ID:</label>
+  <select name="illness_id">
+    {{#each data}}
+      <option name="prov_id" value="{{this.Illnesses_illness_id}}">{{this.Illnesses_illness_id}}</option>
+    {{/each}}
+  </select>
+
+  <label for="datetime_id">Date and Time:</label>
+  <input type="datetime-local" id="datetime_id" name="appointment_date_time">
+
+  <button type="submit" >Add Patient Tests</button>
+</form>

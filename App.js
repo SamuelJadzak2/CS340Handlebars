@@ -198,6 +198,16 @@ app.use('/', prescription_CRUD)
 
 const appointment_CRUD = require('./js/appointment_CRUD.js')
 app.use('/', appointment_CRUD)
+
+const patient_test_CRUD = require('./js/patient_test_CRUD.js')
+app.use('/', patient_test_CRUD)
+
+const patient_illnesses_CRUD = require('./js/patient_illnesses_CRUD.js')
+app.use('/', patient_illnesses_CRUD)
+
+const patient_procedures_CRUD = require('./js/patient_procedures_CRUD.js')
+app.use('/', patient_procedures_CRUD)
+
 /*
     LISTENER
 */
